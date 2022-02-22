@@ -1,0 +1,16 @@
+{
+  "install": {
+    "success": "{{program}}安装成功",
+    "error": "{{program}}安装失败, 失败原因:{{reason}}"
+  },
+  "uninstall": {
+    "success": "{{program}}卸载成功",
+    "error": "{{program}}卸载失败"
+  },
+  "start": {
+    "success": "{{program}}启动成功",
+    "error": "{{program}}启动失败"
+  },
+  "appName": "国际化支持",
+  "needRoot": "需要root用户"
+}
