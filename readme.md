@@ -1,7 +1,9 @@
 ### go-i18n
 用最简单的方法让你的go程序支持国际化，我们使用接口来支持多种驱动的扩展。
+
 #### 目前支持的驱动
 + [x]  json 格式的语言文件
++ [x]  Embed 嵌入式文件系统 (使用 json格式)
 + [ ] toml 格式
 + [ ] yml 格式
 + [ ] xml 格式
@@ -9,6 +11,11 @@
 + [ ] postgresql
 + [ ] redis
 + 其他你想支持的任何数据源
+
+### 语言支持
++ [x] 中文
++ [x] English
++ [ ] other
 
 ### 如何使用
 > import "github.com/guoliang1994/go-i18n"
