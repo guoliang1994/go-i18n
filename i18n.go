@@ -43,11 +43,11 @@ func (Self *I18N) T(keyPath string, placeholder ...string) string {
 	}
 	// replace placeholder
 	// example: {{program}} install success will be output nps install success
-	var i int
-	for group != nil && len(placeholder) > 0 {
-		msg = strings.Replace(msg, group.String(), placeholder[i], -1)
-		group, _ = reg.FindNextMatch(group)
-		i++
+	for _, p := range placeholder {
+		if group != nil {
+			msg = strings.Replace(msg, group.String(), p, -1)
+			group, _ = reg.FindNextMatch(group)
+		}
 	}
 
 	return msg
