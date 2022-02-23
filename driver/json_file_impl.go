@@ -19,6 +19,9 @@ func NewJsonFileI18nImpl(langDir string) contract.I18NDriver {
 
 func (Self *JsonFileI18NImpl) LoadLang(location string) []byte {
 	fileName := fmt.Sprintf(Self.langDir+"\\%s.json", location)
-	data, _ := ioutil.ReadFile(fileName)
+	data, err := ioutil.ReadFile(fileName)
+	if err != nil {
+		fmt.Println(contract.PkgName, ": json file load lang  err,", err)
+	}
 	return data
 }

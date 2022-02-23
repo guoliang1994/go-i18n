@@ -21,6 +21,8 @@ func NewEmbedI18NImpl(f embed.FS, dirName string) contract.I18NDriver {
 
 func (Self *EmbedI18NImpl) LoadLang(location string) []byte {
 	data, err := Self.f.ReadFile(Self.dirName + location + ".json")
-	fmt.Println(err)
+	if err != nil {
+		fmt.Println("go:embed load lang err,", err)
+	}
 	return data
 }

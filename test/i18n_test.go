@@ -1,6 +1,7 @@
 package test
 
 import (
+	"embed"
 	"github.com/guoliang1994/go-i18n"
 	"github.com/guoliang1994/go-i18n/driver"
 	"testing"
@@ -35,6 +36,55 @@ func TestAddLangAndLevelLang(t *testing.T) {
 	lang.AddLang(driver2)
 	msg := lang.T("nice.too.meet")
 	assert := "you"
+	if msg != assert {
+		t.Fatal("want:", assert, "get", msg)
+	}
+}
+
+func TestStringDriver(t *testing.T) {
+	langMap := make(map[string]string)
+	langMap[i18n.Chinese] = `{"nice":"你好字节"}`
+	langMap[i18n.English] = `{"nice":"nice byte"}`
+	driver1 := driver.NewStringI18NImpl(langMap)
+	lang := i18n.NewI18N(i18n.English, driver1)
+	msg := lang.T("nice")
+	assert := "nice byte"
+	if msg != assert {
+		t.Fatal("want:", assert, "get", msg)
+	}
+}
+
+func TestBytesDriver(t *testing.T) {
+	langMap := make(map[string][]byte)
+	langMap[i18n.Chinese] = []byte(`{"nice":"你好字节"}`)
+	langMap[i18n.English] = []byte(`{"nice":"nice byte"}`)
+	driver1 := driver.NewBytesI18NImpl(langMap)
+	lang := i18n.NewI18N(i18n.English, driver1)
+	msg := lang.T("nice")
+	assert := "nice byte"
+	if msg != assert {
+		t.Fatal("want:", assert, "get", msg)
+	}
+}
+
+func TestGoBindataDriver(t *testing.T) {
+	driver1 := driver.NewGoBindataI18NImpl(Asset, "lang/")
+	lang := i18n.NewI18N(i18n.English, driver1)
+	msg := lang.T("install.success")
+	assert := "{{program}} install success"
+	if msg != assert {
+		t.Fatal("want:", assert, "get", msg)
+	}
+}
+
+//go:embed lang
+var f embed.FS
+
+func TestEmbedDriver(t *testing.T) {
+	driver1 := driver.NewEmbedI18NImpl(f, "lang/")
+	lang := i18n.NewI18N(i18n.English, driver1)
+	msg := lang.T("install.success")
+	assert := "{{program}} install success"
 	if msg != assert {
 		t.Fatal("want:", assert, "get", msg)
 	}
