@@ -10,7 +10,7 @@ import (
 )
 
 type I18N struct {
-	location string `json:"location"`
+	location string
 	lang     jsoniter.RawMessage
 }
 
@@ -33,6 +33,9 @@ func (Self *I18N) T(keyPath string, placeholder ...string) string {
 			getter = jsoniter.Get(Self.lang, path)
 		}
 	}
+	if getter == nil {
+		return ""
+	}
 	msg := getter.ToString()
 	reg := regexp2.MustCompile(`(\{\{[\d\w\s]*\}\})`, 0)
 	group, err := reg.FindStringMatch(msg)
@@ -51,4 +54,14 @@ func (Self *I18N) T(keyPath string, placeholder ...string) string {
 	}
 
 	return msg
+}
+
+func (Self *I18N) AddLang(driver contract.I18NDriver) {
+	content := driver.LoadLang(Self.location)
+	var lang1 map[string]interface{}
+	var lang2 map[string]interface{}
+	_ = jsoniter.Unmarshal(content, &lang1)
+	_ = jsoniter.Unmarshal(Self.lang, &lang2)
+	mergeLang := JsonMerge(lang1, lang2)
+	Self.lang, _ = jsoniter.Marshal(mergeLang)
 }

@@ -17,6 +17,9 @@
 + [x] English
 + [ ] other
 
+### 有用的功能
++ [x] 合并多个目录下的语言文件 `AddLang(driver contract.I18NDriver)`,假如你有两个目录下都有中文的语言包，你可以把他们合并。
+
 ### 如何使用
 > import "github.com/guoliang1994/go-i18n"
 
