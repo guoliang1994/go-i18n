@@ -1,4 +1,4 @@
-## Welcome to GitHub Pages
+## 欢迎使用 go-i18n
 
 You can use the [editor on GitHub](https://github.com/guoliang1994/go-i18n/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
 
