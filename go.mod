@@ -1,4 +1,4 @@
-module github.com/guoliang1994/go-i18n
+module gopkg.in/guoliang1994/go-i18n.v1
 
 go 1.17
 
@@ -8,7 +8,6 @@ require (
 )
 
 require (
-	github.com/jteeuwen/go-bindata v3.0.7+incompatible // indirect
 	github.com/modern-go/concurrent v0.0.0-20180228061459-e0a39a4cb421 // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 )

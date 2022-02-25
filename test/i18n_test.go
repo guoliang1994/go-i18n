@@ -2,8 +2,8 @@ package test
 
 import (
 	"embed"
-	"github.com/guoliang1994/go-i18n"
-	"github.com/guoliang1994/go-i18n/driver"
+	"gopkg.in/guoliang1994/go-i18n.v1"
+	"gopkg.in/guoliang1994/go-i18n.v1/driver"
 	"testing"
 )
 
