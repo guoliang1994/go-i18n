@@ -75,7 +75,7 @@ func (Self *I18N) dealLang() {
 		langBytes := d.LoadLang(Self.location)
 		_ = jsoniter.Unmarshal(langBytes, &lang1)
 		_ = jsoniter.Unmarshal(Self.lang[Self.location], &lang2)
-		mergeLang := JsonMerge(lang1, lang2)
+		mergeLang := JsonMerge(lang2, lang1)
 		Self.lang[Self.location], _ = jsoniter.Marshal(mergeLang)
 	}
 }

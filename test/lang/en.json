@@ -1,16 +1,6 @@
 {
   "install": {
-    "success": "{{program}} install success",
+    "success": "{{program}} install successx",
     "error": "{{program}} install fail, reason: {{reason}}"
-  },
-  "uninstall": {
-    "success": "{{program}} uninstall success",
-    "error": "{{program}} uninstall fail {{reason}}"
-  },
-  "start": {
-    "success": "{{program}} start success",
-    "error": "{{program}} start fail"
-  },
-  "appName": "i18n",
-  "needRoot": "need root user execute"
+  }
 }
