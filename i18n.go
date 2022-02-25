@@ -10,27 +10,34 @@ import (
 )
 
 type I18N struct {
-	location string
-	lang     jsoniter.RawMessage
+	location    string
+	lang        map[string]jsoniter.RawMessage
+	driverChain []contract.I18NDriver // 加载的所有语言
 }
 
-func NewI18N(location string, driver contract.I18NDriver) *I18N {
+func NewI18N(location string) *I18N {
 	i18n := I18N{
 		location: location,
+		lang:     make(map[string]jsoniter.RawMessage),
 	}
-	_ = jsoniter.Unmarshal(driver.LoadLang(location), &i18n.lang)
 	return &i18n
 }
 
 //T get lang
 func (Self *I18N) T(keyPath string, placeholder ...string) string {
+	//If the language is not loaded
+	_, ok := Self.lang[Self.location]
+	if !ok {
+		Self.dealLang()
+	}
+
 	pathArr := strings.Split(keyPath, ".")
 	var getter jsoniter.Any
 	for _, path := range pathArr {
 		if getter != nil {
 			getter = jsoniter.Get([]byte(getter.ToString()), path)
 		} else {
-			getter = jsoniter.Get(Self.lang, path)
+			getter = jsoniter.Get(Self.lang[Self.location], path)
 		}
 	}
 	if getter == nil {
@@ -56,12 +63,26 @@ func (Self *I18N) T(keyPath string, placeholder ...string) string {
 	return msg
 }
 
-func (Self *I18N) AddLang(driver contract.I18NDriver) {
-	content := driver.LoadLang(Self.location)
-	var lang1 map[string]interface{}
-	var lang2 map[string]interface{}
-	_ = jsoniter.Unmarshal(content, &lang1)
-	_ = jsoniter.Unmarshal(Self.lang, &lang2)
-	mergeLang := JsonMerge(lang1, lang2)
-	Self.lang, _ = jsoniter.Marshal(mergeLang)
+func (Self *I18N) AddLang(driver contract.I18NDriver) *I18N {
+	Self.driverChain = append(Self.driverChain, driver)
+	return Self
+}
+
+func (Self *I18N) dealLang() {
+	for _, d := range Self.driverChain {
+		var lang1 map[string]interface{}
+		var lang2 map[string]interface{}
+		langBytes := d.LoadLang(Self.location)
+		_ = jsoniter.Unmarshal(langBytes, &lang1)
+		_ = jsoniter.Unmarshal(Self.lang[Self.location], &lang2)
+		mergeLang := JsonMerge(lang1, lang2)
+		Self.lang[Self.location], _ = jsoniter.Marshal(mergeLang)
+	}
+}
+
+//ChangeLocation the function can change location when the program is running
+func (Self *I18N) ChangeLocation(location string) *I18N {
+	Self.location = location
+	Self.dealLang()
+	return Self
 }
