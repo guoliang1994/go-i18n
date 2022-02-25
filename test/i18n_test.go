@@ -1,8 +1,8 @@
 package test
 
 import (
-	"github.com/guoliang1994/go-i18n"
-	"github.com/guoliang1994/go-i18n/driver"
+	"gopkg.in/guoliang1994/go-i18n.v2"
+	"gopkg.in/guoliang1994/go-i18n.v2/driver"
 	"testing"
 )
 

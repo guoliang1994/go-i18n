@@ -1,7 +1,7 @@
 package driver
 
 import (
-	"github.com/guoliang1994/go-i18n/contract"
+	"gopkg.in/guoliang1994/go-i18n.v2/contract"
 )
 
 type StringI18NImpl struct {

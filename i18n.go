@@ -3,8 +3,8 @@ package i18n
 import (
 	"fmt"
 	"github.com/dlclark/regexp2"
-	"github.com/guoliang1994/go-i18n/contract"
 	jsoniter "github.com/json-iterator/go"
+	"gopkg.in/guoliang1994/go-i18n.v2/contract"
 	_ "io/ioutil"
 	"strings"
 )

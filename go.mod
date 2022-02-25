@@ -1,4 +1,4 @@
-module github.com/guoliang1994/go-i18n
+module gopkg.in/guoliang1994/go-i18n.v2
 
 go 1.17
 
