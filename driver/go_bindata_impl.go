@@ -2,7 +2,7 @@ package driver
 
 import (
 	"fmt"
-	"gopkg.in/guoliang1994/go-i18n.v2/contract"
+	"gopkg.in/guoliang1994/go-i18n.v3/contract"
 )
 
 type GoBindataI18NImpl struct {
@@ -18,8 +18,8 @@ func NewGoBindataI18NImpl(f func(name string) ([]byte, error), dirName string) c
 	return &i18n
 }
 
-func (Self *GoBindataI18NImpl) LoadLang(location string) []byte {
-	data, err := Self.f(Self.dirName + location + ".json")
+func (Self *GoBindataI18NImpl) LoadLang() []byte {
+	data, err := Self.f(Self.dirName + "lang.json")
 	if err != nil {
 		fmt.Println(contract.PkgName, ": go-bindata load lang err,", err)
 	}

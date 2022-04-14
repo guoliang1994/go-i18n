@@ -3,7 +3,7 @@ package driver
 import (
 	"embed"
 	"fmt"
-	"gopkg.in/guoliang1994/go-i18n.v2/contract"
+	"gopkg.in/guoliang1994/go-i18n.v3/contract"
 )
 
 type EmbedI18NImpl struct {
@@ -19,8 +19,8 @@ func NewEmbedI18NImpl(f embed.FS, dirName string) contract.I18NDriver {
 	return &i18n
 }
 
-func (Self *EmbedI18NImpl) LoadLang(location string) []byte {
-	data, err := Self.f.ReadFile(Self.dirName + location + ".json")
+func (Self *EmbedI18NImpl) LoadLang() []byte {
+	data, err := Self.f.ReadFile(Self.dirName + "lang.json")
 	if err != nil {
 		fmt.Println("go:embed load lang err,", err)
 	}

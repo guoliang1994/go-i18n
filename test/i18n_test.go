@@ -1,8 +1,8 @@
 package test
 
 import (
-	"gopkg.in/guoliang1994/go-i18n.v2"
-	"gopkg.in/guoliang1994/go-i18n.v2/driver"
+	"gopkg.in/guoliang1994/go-i18n.v3"
+	"gopkg.in/guoliang1994/go-i18n.v3/driver"
 	"testing"
 )
 
@@ -102,16 +102,22 @@ import (
 //}
 
 func TestDynamicAddLang(t *testing.T) {
-	lang := i18n.NewI18N(i18n.Chinese)
+	lang := i18n.NewI18N(i18n.Zh_CN)
 	driver1 := driver.NewJsonFileI18nImpl("lang/")
-	driver2 := driver.NewGoBindataI18NImpl(Asset, "lang/")
-	msg := lang.AddLang(driver1).AddLang(driver2).T("install.success", "nps plus")
-	assert := "nps plus安装成功"
+	driver2 := driver.NewJsonFileI18nImpl("lang2/")
+	//driver2 := driver.NewGoBindataI18NImpl(Asset, "lang/")
+	msg := lang.AddLang(driver1).AddLang(driver2).T("install.success", "np")
+	assert := "np安装成功"
 	if msg != assert {
 		t.Fatal("want:", assert, "get", msg)
 	}
-	msg = lang.ChangeLocation(i18n.English).T("install.success", "nps plus")
-	assert = "nps plus install success"
+	msg = lang.ChangeLocation(i18n.En_WW).T("install.success", "np")
+	assert = "np install success"
+	if msg != assert {
+		t.Fatal("want:", assert, "get", msg)
+	}
+	msg = lang.ChangeLocation(i18n.En_WW).T("extend.success")
+	assert = "扩展语言成功"
 	if msg != assert {
 		t.Fatal("want:", assert, "get", msg)
 	}

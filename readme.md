@@ -33,19 +33,43 @@
 ```json
 {
   "install": {
-    "success": "{{program}}安装成功",
-    "error": "{{program}}安装失败, 失败原因:{{reason}}"
+    "success": {
+      "en": "{{program}} install success",
+      "zh": "{{program}}安装成功"
+    },
+    "error": {
+      "en": "{{program}} install fail, error:{{reason}}",
+      "zh": "{{program}}安装失败, 失败原因:{{reason}}"
+    }
   },
   "uninstall": {
-    "success": "{{program}}卸载成功",
-    "error": "{{program}}卸载失败"
+    "success": {
+      "en": "",
+      "zh": "{{program}}卸载成功"
+    },
+    "error": {
+      "en": "",
+      "zh": "{{program}}卸载失败"
+    }
   },
   "start": {
-    "success": "{{program}}启动成功",
-    "error": "{{program}}启动失败"
+    "success": {
+      "en": "",
+      "zh": "{{program}}启动成功"
+    },
+    "error": {
+      "en": "",
+      "zh": "{{program}}启动失败"
+    }
   },
-  "appName": "国际化支持",
-  "needRoot": "需要root用户"
+  "appName": {
+    "en": "",
+    "zh": "国际化支持"
+  },
+  "needRoot": {
+    "en": "",
+    "zh": "需要root用户"
+  }
 }
 ```
 
@@ -54,31 +78,52 @@
 > 路径可以支持无限极，用 「.」 语法，就像 `JavaScript` 取对象属性
 ```golang
 
-driver := driver.NewJsonFileI18nImpl("..\\lang")
-i18n := go_i18n.NewI18N(go_i18n.Chinese, driver)
-msg := i18n.T("install.error", i18n.T("appName"), i18n.T("needRoot"))
-
+func TestDynamicAddLang(t *testing.T) {
+    lang := i18n.NewI18N(i18n.Zh_CN)
+    driver1 := driver.NewJsonFileI18nImpl("lang/")
+    driver2 := driver.NewJsonFileI18nImpl("lang2/")
+    //driver2 := driver.NewGoBindataI18NImpl(Asset, "lang/")
+    msg := lang.AddLang(driver1).AddLang(driver2).T("install.success", "np")
+    assert := "np安装成功"
+    if msg != assert {
+        t.Fatal("want:", assert, "get", msg)
+    }
+    msg = lang.ChangeLocation(i18n.En_WW).T("install.success", "np")
+    assert = "np install success"
+    if msg != assert {
+        t.Fatal("want:", assert, "get", msg)
+    }
+    msg = lang.ChangeLocation(i18n.En_WW).T("extend.success")
+    assert = "扩展语言成功"
+    if msg != assert {
+        t.Fatal("want:", assert, "get", msg)
+    }
+}
 ```
 
 ### 如何实现其他文件类型或数据库驱动
 > 这是 json 的实现，你只需要实现 contract.I18NDriver 中的接口即可
 ```go
 type JsonFileI18NImpl struct {
-	langDir string
+    langDir string
 }
 
-func NewJsonFileI18mImpl(langDir string) contract.I18NDriver {
-	f := JsonFileI18NImpl{
-		langDir: langDir,
-	}
-	return &f
+func NewJsonFileI18nImpl(langDir string) contract.I18NDriver {
+    f := JsonFileI18NImpl{
+        langDir: langDir,
+    }
+    return &f
 }
 
-func (Self *JsonFileI18NImpl) LoadLang(location string) []byte {
-	fileName := fmt.Sprintf(Self.langDir + "\\%s.json", location)
-	data, _ := ioutil.ReadFile(fileName)
-	return data
+func (Self *JsonFileI18NImpl) LoadLang() []byte {
+    fileName := fmt.Sprintf(Self.langDir + "lang.json")
+    data, err := ioutil.ReadFile(fileName)
+    if err != nil {
+        fmt.Println(contract.PkgName, ": json file load lang  err,", err)
+    }
+    return data
 }
+
 
 ```
 > 欢迎各路大神提供不同的驱动
